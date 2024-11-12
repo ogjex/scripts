@@ -1,0 +1,16 @@
+#!/bin/bash
+
+TERMINAL_NAME="alacritty"
+
+# Function to check if a terminal is running and run fastfetch if it is not
+function check_terminal_and_run_fastfetch {
+    if pgrep -x "$TERMINAL_NAME" > /dev/null; then
+	echo "$TERMINAL_NAME is running."
+    else
+        echo "$TERMINAL_NAME is not running. Running fastfetch..."
+        fastfetch
+    fi
+}
+
+# Call the function
+check_terminal_and_run_fastfetch
