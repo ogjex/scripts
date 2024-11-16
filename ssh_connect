@@ -1,4 +1,4 @@
 #!/bin/bash
 
-exec ssh-agent -s bash
+exec 'ssh-agent -s' bash
 ssh-add ~/.ssh/id_ed25519
