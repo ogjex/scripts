@@ -1,5 +1,0 @@
-#!/bin/bash
-
-xrandr --output eDP --primary --mode 2256x1504 --right-of DisplayPort-2 --output DisplayPort-2 --off 
-brightnessctl set 25%
-xdotool mousemove 1128 752

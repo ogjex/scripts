@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Capture the first connected DisplayPort output
+CONNECTED_DISPLAY=$(xrandr | awk '/\<DisplayPort\>/ && /connected/ && ! /disconnected/ {print $1; exit}')
+
+# Check if the variable is not empty
+if [ -n "$CONNECTED_DISPLAY" ]; then
+  # Use the variable in the xrandr command
+  xrandr --output eDP --mode 2256x1504 --right-of "$CONNECTED_DISPLAY" --primary --output "$CONNECTED_DISPLAY" --auto
+else
+  echo "No connected presentation display found."
+fi
+

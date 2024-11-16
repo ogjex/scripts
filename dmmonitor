@@ -1,0 +1,20 @@
+!#/bin/bash
+
+declare -a options=(
+"monitor_office"
+"monitor_presentation"
+"monitor_main"
+"quit"
+)
+
+CHOICE=$(printf '%s\n "${options[@]}" | dmenu -i -l 20 -p 'Choose monitor setup:')
+
+if [[ -n "$CHOICE" == "quit" ]]; then
+   echo "Selection terminated." && exit 1
+
+elif [ -n "$CHOICE" ] && command -v "$CHOICE" > /dev/null; then
+  "$CHOICE"
+
+else
+    echo "Program terminated." && exit 1
+fi

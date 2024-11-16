@@ -1,6 +1,6 @@
 #!/bin/bash
 
-xrandr --output eDP --mode 2256x1504 --right-of DisplayPort-10 --output DisplayPort-10 --primary --mode 2560x1440
+xrandr --output eDP --mode 2256x1504 --right-of DisplayPort-11 --output DisplayPort-11 --primary --mode 2560x1440
 xdotool mousemove --screen 0 1280 720
 brightnessctl set 100%
 nitrogen --restore
