@@ -5,3 +5,4 @@ xdotool mousemove --screen 0 1280 720
 brightnessctl set 100%
 nitrogen --restore
 setxkbmap -layout dk
+notify-send "Connected to office monitors."

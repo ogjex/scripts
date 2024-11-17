@@ -7,6 +7,7 @@ CONNECTED_DISPLAY=$(xrandr | awk '/\<DisplayPort\>/ && /connected/ && ! /disconn
 if [ -n "$CONNECTED_DISPLAY" ]; then
   # Use the variable in the xrandr command
   xrandr --output eDP --mode 2256x1504 --right-of "$CONNECTED_DISPLAY" --primary --output "$CONNECTED_DISPLAY" --auto
+  notify-send "Connected to presentation display."
 else
   echo "No connected presentation display found."
 fi
