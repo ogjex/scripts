@@ -1,0 +1,25 @@
+#!/bin/bash
+
+for arg in "$@"; do
+	case $arg in
+		"--file")
+		echo 'You selected the operation on a file'
+		;;
+		"--all")
+		echo 'You selected the full operation'
+		;;
+		"--underscore")
+		echo 'You selected the operation on only underscores'
+		;;
+		"--space")
+		echo 'You selected the operation on only spaces'
+		;;
+		"--help")
+		echo 'You selected to get some help'
+		;;
+		*)
+		echo "Invalid operation: $arg"
+		   exit 1
+		;;
+	esac
+done
