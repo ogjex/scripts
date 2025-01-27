@@ -1,0 +1,6 @@
+#!/bin/bash
+
+touch the_file_with_underscores.txt
+touch 'the file with spaces.txt'
+touch 'the file with spaces - and a single dash.txt'
+touch 'the file with spaces - a spaced dash _ and an arbitrary spaced underscore.txt'
