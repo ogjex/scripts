@@ -3,8 +3,8 @@
 hash fzf 2> /dev/null || echo "[fzf-command-bookmarks] fzf binary not found!"
 hash highlight 2> /dev/null || echo "[fzf-command-bookmarks] highlight binary not found!"
 
-export FZF_COMMAND_BOOKMARKS_FILE="${HOME}/.fzf_command_bookmarks.txt"
-export FZF_COMMAND_BOOKMARKS_ADD="\C-k"
+export FZF_COMMAND_BOOKMARKS_FILE="${HOME}/.fzf-command-bookmarks.txt"
+export FZF_COMMAND_BOOKMARKS_ADD="\C-b"
 export FZF_COMMAND_BOOKMARKS_SHOW="\C-@"
 
 
