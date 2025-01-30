@@ -1,5 +1,5 @@
 #!/bin/bash
-rename_pattern='s/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g'
+rename_pattern='s/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g; y/A-Z/a-z/'
 
 echo "This is a dry run. No files will be renamed."
 
