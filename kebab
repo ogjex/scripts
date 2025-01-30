@@ -6,14 +6,14 @@ echo "This is a dry run. No files will be renamed."
 echo
 
 #perl-rename -niv 's/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g' *
-perl-rename -niv "$rename_pattern" *
+perl-rename -fniv "$rename_pattern" *
 read -p "Do you want to proceed with the rename? (y/n) " -n 1 -r
 
 echo    # (optional) move to a new line
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    perl-rename -i "$rename_pattern" *
+    perl-rename -fi "$rename_pattern" *
     echo
     echo "Files renamed to kebab-case."
 fi
