@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Define the rename pattern
+rename_pattern='s/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g; y/A-Z/a-z/'
+
+echo "This is a dry run. No files will be renamed."
+
+echo
+
+# Check if --all argument is passed
+case $1 in
+    "--all")
+        echo "Renaming all files..."
+        perl-rename -niv 's/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g' *
+        ;;
+    *)
+        echo "Enter a file to rename or use '*' to rename all files:"
+        read -p "> " filename
+        ;;
+esac
+
+# Check if '*' is used, otherwise check if file exists
+if [[ $filename == "*" ]]; then
+    # If '*' is used, rename all files in the current directory
+    echo "Renaming all files..."
+    perl-rename -niv 's/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g' *
+elif [[ ! -f "$filename" ]]; then
+    # If file does not exist, exit immediately
+    echo "File '$filename' does not exist. Exiting."
+    exit 1
+else
+    # Check if file exists before proceeding with rename operation
+    found_file=$(find . -name "$filename" -maxdepth 1)
+
+    if [[ $? -eq 0 ]]; then
+        # If file is found, prompt user for confirmation before renaming
+        echo "File '$filename' found. Do you want to proceed with the rename? (y/n)"
+        read -p "> " reply
+
+        case $reply in
+            [Yy]*)
+                # If confirmed, rename the file using the provided pattern
+                perl-rename -fniv "$rename_pattern" "$found_file"
+                ;;
+            *)
+                echo "Renaming cancelled."
+                exit 1
+                ;;
+        esac
+    else
+        echo "File '$filename' not found. Exiting."
+        exit 1
+    fi
+fi
+
+echo
+echo "Files renamed to kebab-case."
