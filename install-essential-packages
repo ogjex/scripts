@@ -1,0 +1,1 @@
+pacman -S efibootmgr networkmanager sof-firmware acpi acpi_call acpid wpa_supplicant man reflector base-devel linux-headers bluez bluez-utils rsync openssh bash-completion netctl pipewire pipewire-pulse pipewire-alsa pipewire-jack pavucontrol wireplumber ufw
