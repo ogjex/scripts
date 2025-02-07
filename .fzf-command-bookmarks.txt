@@ -1,0 +1,9 @@
+sudo pacman -Syu##update-all-packages
+yay -S --answerclean All --rebuildall sioyek##rebuild-sioyek
+yay -Syu##update-packages-aur
+sudo reflector --verbose --country DK,SE,DE,FR,NO --protocol https -l 15 --sort rate --save /etc/pacman.d/mirrorlist##update-reflector-mirrors
+ls -t | head -n 2 | xargs -I {} mv {} ../Documents/jex-vault/__imgs/##move-recent-files-to-folder
+find . -type f -newermt "$(date +%Y-%m-%d)" -exec mv {} /path/to/source \;##move-files-date-today
+sudo dd bs=1M conv=fdatasync if="input/destination" of=/dev/"output/disk"##dd-image-write
+loffice --headless --convert-to pdf /target/file##libreoffice-convert-pdf
+sudo pacman -Qe##show-packages-arch
