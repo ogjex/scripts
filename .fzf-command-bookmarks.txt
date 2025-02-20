@@ -9,4 +9,4 @@ loffice --headless --convert-to pdf /target/file##libreoffice-convert-pdf
 sudo pacman -Qe##show-packages-arch
 loffice --headless --convert-to pdf /file/name/and/path##libreoffice-convert-to-pdf-headless
 ln -s /source/file/ /link/location##symbolic-link
-chezmoi init git@github.com:$GITHUB_USERNAME/dotfiles.git##chezmoi-init-new-machine
+chezmoi init git@github.com:ogjex/dotfiles.git##chezmoi-init-new-machine
