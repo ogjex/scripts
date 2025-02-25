@@ -11,3 +11,4 @@ loffice --headless --convert-to pdf /file/name/and/path##libreoffice-convert-to-
 ln -s /source/file/ /link/location##symbolic-link
 chezmoi init git@github.com:ogjex/dotfiles.git##chezmoi-init-new-machine
 ls -1 | wc -##count-items-in-folder
+enable-wifi-radio##nmcli radio wifi on
