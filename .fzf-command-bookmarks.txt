@@ -10,3 +10,4 @@ sudo pacman -Qe##show-packages-arch
 loffice --headless --convert-to pdf /file/name/and/path##libreoffice-convert-to-pdf-headless
 ln -s /source/file/ /link/location##symbolic-link
 chezmoi init git@github.com:ogjex/dotfiles.git##chezmoi-init-new-machine
+ls -1 | wc -##count-items-in-folder
