@@ -1,0 +1,12 @@
+
+1password
+brave-bin
+dragon-drop
+oh-my-posh
+pdfannots-git
+sioyek
+timeshift
+timeshift-autosnap
+yay-bin
+yay-bin-debug
+greetd
