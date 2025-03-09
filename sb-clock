@@ -1,21 +1,25 @@
 #!/bin/sh
 
+cal_icon=""
 clock=$(date '+%I')
+date=$(date -I)
+time=$(date +"%H:%M")
+#time=$(date "+%I:%M%p")
 
 case "$clock" in
-	"00") icon="󱑊 " ;;
-	"01") icon="󱐿 " ;;
-	"02") icon="󱑀 " ;;
-	"03") icon="󱑁 " ;;
-	"04") icon="󱑂 " ;;
-	"05") icon="󱑃 " ;;
-	"06") icon="󱑄 " ;;
-	"07") icon="󱑅 " ;;
-	"08") icon="󱑆 " ;;
-	"09") icon="󱑇 " ;;
-	"10") icon="󱑈 " ;;
-	"11") icon="󱑉 " ;;
-	"12") icon="󱑊 " ;;
+	"00") clock_icon="󱑊 " ;;
+	"01") clock_icon="󱐿 " ;;
+	"02") clock_icon="󱑀 " ;;
+	"03") clock_icon="󱑁 " ;;
+	"04") clock_icon="󱑂 " ;;
+	"05") clock_icon="󱑃 " ;;
+	"06") clock_icon="󱑄 " ;;
+	"07") clock_icon="󱑅 " ;;
+	"08") clock_icon="󱑆 " ;;
+	"09") clock_icon="󱑇 " ;;
+	"10") clock_icon="󱑈 " ;;
+	"11") clock_icon="󱑉 " ;;
+	"12") clock_icon="󱑊 " ;;
 esac
 
 case $BLOCK_BUTTON in
@@ -26,4 +30,5 @@ case $BLOCK_BUTTON in
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-date " +%Y %b %d %I:%M%p"
+echo -n $cal_icon " " && echo -n $date " " && echo -n $clock_icon " " && echo -n $time
+#date "+%Y %B %D %I:%M%p"
