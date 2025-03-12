@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# Define the temporary folder
+TEMP_DIR="$HOME/temp-papers"
+
+# Create the temp directory if it doesn't exist
+mkdir -p "$TEMP_DIR"
+
+# Check if an argument (file list) is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <file-list>"
+    exit 1
+fi
+
+# Ensure the provided file list exists
+if [ ! -f "$1" ]; then
+    echo "Error: File list '$1' not found!"
+    exit 1
+fi
+
+# Find and prompt for deletion of files older than 1 hour
+find "$TEMP_DIR" -type f -mmin +60 | while IFS= read -r file; do
+    echo "File older than 1 hour: $file"
+    read -p "Delete? (y/n): " choice
+    case "$choice" in
+        y|Y ) rm "$file"; echo "Deleted: $file";;
+        * ) echo "Skipped: $file";;
+    esac
+done
+
+# Read the file list line by line
+while IFS= read -r line; do
+    # Remove "file://" prefix
+    filepath="${line#file://}"
+
+    # Check if file exists before copying
+    if [ -f "$filepath" ]; then
+        cp -i "$filepath" "$TEMP_DIR"
+        echo "Copied: $filepath"
+    else
+        echo "File not found: $filepath"
+    fi
+done < "$1"
+
+echo "All files copied to $TEMP_DIR."
+
+# Count files in temp-papers
+FILE_COUNT=$(find "$TEMP_DIR" -type f | wc -l)
+
+# If no files were copied, exit
+if [ "$FILE_COUNT" -eq 0 ]; then
+    echo "No files to zip. Exiting."
+    exit 1
+fi
+
+# Remove any .zip files in the temp-papers directory
+find "$TEMP_DIR" -type f -name "*.zip" -exec rm {} \;
+echo "Removed old ZIP files from $TEMP_DIR."
+
+# Prompt for ZIP filename
+read -p "Enter a name for the ZIP file (without .zip): " zipname
+ZIP_FILE="$TEMP_DIR/${zipname}.zip"
+
+# Zip only the contents of temp-papers (not the folder itself)
+(cd "$TEMP_DIR" && zip -r "$ZIP_FILE" . > /dev/null)
+
+# Confirm completion
+echo "Zipped $FILE_COUNT files into: $ZIP_FILE"
