@@ -16,5 +16,5 @@ ip link show##show-network-interfaces
 systemctl list-unit-files | grep enable##show-systemd-services
 gh repo create "repo name" --public --source=dev/repo-location --push##gh-cli-create-repo
 sudo pacman -Qi "package-name"##check-package-dependencies
-rclone sync --verbose ~/Documents/teaching/ gdrive:teaching##rclone-push-teaching
+rclone sync --verbose ~/Documents/teaching/ gdrive:teaching --exclude '.git/**'##rclone-push-teaching
 rclone mount gdrive: ~/Documents/gdrive-mount/##rclone-mount-gdrive-full
