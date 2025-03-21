@@ -19,3 +19,5 @@ sudo pacman -Qi "package-name"##check-package-dependencies
 rclone sync --verbose ~/Documents/teaching/ gdrive:teaching --exclude '.git/**'##rclone-push-teaching
 rclone mount gdrive: ~/Documents/gdrive-mount/##rclone-mount-gdrive-full
 rclone sync --verbose gdrive:teaching ~/Documents/teaching --exclude '.git/**'##gdrive-pull-teaching
+source .venv/bin/activate##activate-venv
+##check-venv
