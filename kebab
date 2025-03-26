@@ -13,7 +13,7 @@ echo    # (optional) move to a new line
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    perl-rename -fi "$rename_pattern" *
+    perl-rename -i "$rename_pattern" *
     echo
     echo "Files renamed to kebab-case."
 fi
