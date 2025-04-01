@@ -28,6 +28,11 @@ find "$TEMP_DIR" -type f -mmin +60 | while IFS= read -r file; do
     esac
 done
 
+# Decode the extracted filenames from percentage (URL) encoding to utf-8
+while IFS= read -r line; do
+    echo "$(python3 -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))" "$line")"
+done < "$1" > decoded_filenames.txt && mv decoded_filenames.txt "$1"
+
 # Read the file list line by line
 while IFS= read -r line; do
     # Remove "file://" prefix
