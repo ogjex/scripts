@@ -5,7 +5,6 @@ sudo reflector --verbose --country DK,SE,DE,FR,NO --protocol https -l 15 --sort 
 ls -t | head -n 2 | xargs -I {} mv {} ../Documents/jex-vault/__imgs/##move-recent-files-to-folder
 find . -type f -newermt "$(date +%Y-%m-%d)" -exec mv {} /path/to/source \;##move-files-date-today
 sudo dd bs=1M conv=fdatasync if="input/destination" of=/dev/"output/disk"##dd-image-write
-loffice --headless --convert-to pdf /target/file##libreoffice-convert-pdf
 sudo pacman -Qe##show-packages-arch
 loffice --headless --convert-to pdf /file/name/and/path##libreoffice-convert-to-pdf-headless
 ln -s /source/file/ /link/location##symbolic-link
@@ -16,9 +15,9 @@ ip link show##show-network-interfaces
 systemctl list-unit-files | grep enable##show-systemd-services
 gh repo create "repo name" --public --source=dev/repo-location --push##gh-cli-create-repo
 sudo pacman -Qi "package-name"##check-package-dependencies
-rclone sync --verbose ~/Documents/teaching/ gdrive:teaching --exclude '.git/**'##rclone-push-teaching
+rclone sync --verbose ~/Documents/teaching/ gdrive:teaching --exclude '.git/**'##rclone-sync-push-teaching
 rclone mount gdrive: ~/Documents/gdrive-mount/##rclone-mount-gdrive-full
-rclone sync --verbose gdrive:teaching ~/Documents/teaching --exclude '.git/**'##gdrive-pull-teaching
+rclone sync --verbose gdrive:teaching ~/Documents/teaching --exclude '.git/**'##gdrive-sync-pull-teaching
 source .venv/bin/activate##activate-venv##activate-venv
 echo $VIRTUAL_ENV##check-venv
 sudo timedatectl set-time "YYYY-MM-DD hh:mm:ss"##set-time
