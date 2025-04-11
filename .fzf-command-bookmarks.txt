@@ -22,3 +22,4 @@ source .venv/bin/activate##activate-venv##activate-venv
 echo $VIRTUAL_ENV##check-venv
 sudo timedatectl set-time "YYYY-MM-DD hh:mm:ss"##set-time
 ls -1 -t | head -3 | xargs dragon-drop -x --all##drag-and-drop-recent-files
+ollama run llm-model "query" < document/input > path/to/response##ollama-query-document
