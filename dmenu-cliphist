@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+# THIS SCRIPT NEEDS A REWRITE TO BETTER RENAME THE FUNCTIONS CALL, THEY ARE VERY DIFFICULT TO UNDERSTAND!
+#
 histfile="$HOME/.cache/cliphist"
 placeholder="<NEWLINE>"
 
