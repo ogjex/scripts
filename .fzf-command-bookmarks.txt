@@ -18,9 +18,13 @@ sudo pacman -Qi "package-name"##check-package-dependencies
 rclone sync --verbose ~/Documents/teaching/ gdrive:teaching --exclude '.git/**'##rclone-sync-push-teaching
 rclone mount gdrive: ~/Documents/gdrive-mount/##rclone-mount-gdrive-full
 rclone sync --verbose gdrive:teaching ~/Documents/teaching --exclude '.git/**'##gdrive-sync-pull-teaching
-source .venv/bin/activate##activate-venv##activate-venv
+source .venv/bin/activate##activate-venv
 echo $VIRTUAL_ENV##check-venv
 sudo timedatectl set-time "YYYY-MM-DD hh:mm:ss"##set-time
 ls -1 -t | head -3 | xargs dragon-drop -x --all##drag-and-drop-recent-files
 ollama run llm-model "query" < document/input > path/to/response##ollama-query-document
 git log --all --decorate --oneline --graph##git-view-commit-log
+python3 -m venv .venv##create-venv
+pip freeze > requirements.txt##export-venv-requirements
+pip list##list-venv-packages
+pip install -r requirements.txt##install-venv-requirements
