@@ -30,3 +30,5 @@ pip list##list-venv-packages
 pip install -r requirements.txt##install-venv-requirements
 ssh-copy-id -i ~/.ssh/public_ssh_key.pub "username"@"ip"##copy-ssh-key
 mkdir $(date +%Y%m%d-%H%M)##mkdir-date-only
+for a in *.zip; do unzip "$a" -d "${a%.zip}"; done##unzip-all-dir
+find . -name "*.zip" -exec unzip {} \;##unzip-all-same-dir
