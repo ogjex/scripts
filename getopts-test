@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+
+usage() {
+	echo 'Usage: getopts-test [-h]'
+}
+
+while getopts 'h' opt; do
+	case "$opt" in
+		h) usage; exit 0;;
+		*) usage >&2; exit 1;;
+	esac
+done
+shift $((OPTIND - 1))
+
+echo "arg = $1"

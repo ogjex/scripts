@@ -1,57 +1,40 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Define the rename pattern
-rename_pattern='s/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g; y/A-Z/a-z/'
+# first let us outline all of the different functions necessary for the program to run
+usage() {
+	echo -e 'Usage: kebab [OPTIONS] [FILES or DIRECTORY]...\n\n'
+        echo -e 'Arguments:\n   [FILES or DIRECTORY]... The files to rename or the directory to search through (eg. '*.filetype', '*', or '~/some-directory')\n'
+        echo -e 'Options:'
+        echo -e '   -h\n      Get this help output'
+        echo -e '   -r\n      Recursively search through selected directory depth first'
+        
+}
+# check_files()
+# set_rename_pattern()
+# dry_run()
+# rename_file()
+rename_file(){
+    echo "renamed: $1"
+}
 
-echo "This is a dry run. No files will be renamed."
-
-echo
-
-# Check if --all argument is passed
-case $1 in
-    "--all")
-        echo "Renaming all files..."
-        perl-rename -niv 's/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g' *
-        ;;
-    *)
-        echo "Enter a file to rename or use '*' to rename all files:"
-        read -p "> " filename
-        ;;
-esac
-
-# Check if '*' is used, otherwise check if file exists
-if [[ $filename == "*" ]]; then
-    # If '*' is used, rename all files in the current directory
-    echo "Renaming all files..."
-    perl-rename -niv 's/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g' *
-elif [[ ! -f "$filename" ]]; then
-    # If file does not exist, exit immediately
-    echo "File '$filename' does not exist. Exiting."
-    exit 1
-else
-    # Check if file exists before proceeding with rename operation
-    found_file=$(find . -name "$filename" -maxdepth 1)
-
-    if [[ $? -eq 0 ]]; then
-        # If file is found, prompt user for confirmation before renaming
-        echo "File '$filename' found. Do you want to proceed with the rename? (y/n)"
-        read -p "> " reply
-
-        case $reply in
-            [Yy]*)
-                # If confirmed, rename the file using the provided pattern
-                perl-rename -fniv "$rename_pattern" "$found_file"
-                ;;
-            *)
-                echo "Renaming cancelled."
-                exit 1
-                ;;
-        esac
-    else
-        echo "File '$filename' not found. Exiting."
-        exit 1
+rename_recursively(){
+    # check that only one argument is provided
+    if [[ $# -ne 1 ]]; then
+        echo "Illegal number of parameters: $#" >&2
+        exit 2
     fi
-fi
+    # do something
+    echo "renamed directory recursively: $1"
+}
 
-echo
-echo "Files renamed to kebab-case."
+while getopts 'hr' opt; do
+    # shift removes the first argument which is the option part of the script
+    shift $((OPTIND - 1))
+	case "$opt" in
+		h) usage; exit 0;;
+		r) rename_recursively $@; exit 0;;
+	 	*) usage >&2; exit 1;;
+	esac
+done
+
+rename_file $@
