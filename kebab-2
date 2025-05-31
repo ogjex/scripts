@@ -26,15 +26,25 @@ rename_recursively(){
         usage
         exit 2
     fi
-#    if [[ -d $1 ]]; then
-#        echo "$1 is a directory"
-#    elif [[ -f $1 ]]; then
-#        echo "$1 is a file"
-#    else
-#        echo "$1 is not valid"
+    ARG=$1
+    if [[ -d $ARG ]]; then
+        echo "$ARG is a directory"
+        echo "renamed directory recursively: $ARG"
+    elif [[ -f $ARG ]]; then
+        echo "$ARG is a file and can not be renamed recursively."
+        echo "Exiting..." >&2
+        exit_fail
+    else
+        echo "$ARG is not a valid path" >&2
+        exit_fail
+    fi
     set_rename_pattern
     echo $PATTERN
-    echo "renamed directory recursively: $1"
+}
+
+exit_fail() {
+    usage
+    exit 2
 }
 
 while getopts 'hr' opt; do
