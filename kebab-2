@@ -10,7 +10,9 @@ usage() {
         
 }
 # check_files()
-# set_rename_pattern()
+set_rename_pattern(){
+    PATTERN=$'s/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+}
 # dry_run()
 # rename_file()
 rename_file(){
@@ -21,9 +23,17 @@ rename_recursively(){
     # check that only one argument is provided
     if [[ $# -ne 1 ]]; then
         echo "Illegal number of parameters: $#" >&2
+        usage
         exit 2
     fi
-    # do something
+#    if [[ -d $1 ]]; then
+#        echo "$1 is a directory"
+#    elif [[ -f $1 ]]; then
+#        echo "$1 is a file"
+#    else
+#        echo "$1 is not valid"
+    set_rename_pattern
+    echo $PATTERN
     echo "renamed directory recursively: $1"
 }
 
