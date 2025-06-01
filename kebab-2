@@ -16,7 +16,26 @@ set_rename_pattern(){
 # dry_run()
 # rename_file()
 rename_file(){
-    echo "renamed: $1"
+    # we first need to check all arguments to make sure that the selected files are valid
+    ARG_ARR=("$@")
+    ## declare empty array list with filepaths to rename
+    declare -a RENAME_ARR=()
+    ## now loop through the above array
+    for i in "${ARG_ARR[@]}"
+        do
+            if [[ -e $i ]]; then
+               echo "Added to rename array: $i"
+               RENAME_ARR+=("$i")
+            else 
+               echo -e "$i is not a valid path.\nExiting." >&2
+               exit 2
+            fi
+        done
+    # echo all the elements that will be renamed
+    for i in "${RENAME_ARR[@]}"
+        do 
+            echo -e "$i"
+        done
 }
 
 rename_recursively(){
@@ -42,19 +61,21 @@ rename_recursively(){
     echo $PATTERN
 }
 
+# function to call so save 
 exit_fail() {
     usage
     exit 2
 }
 
 while getopts 'hr' opt; do
-    # shift removes the first argument which is the option part of the script
+    # we need to remove the first argument in the args array (the option) to send the remaining array to the next functions
     shift $((OPTIND - 1))
 	case "$opt" in
 		h) usage; exit 0;;
-		r) rename_recursively $@; exit 0;;
+		r) rename_recursively "$@"; exit 0;;
 	 	*) usage >&2; exit 1;;
 	esac
 done
 
-rename_file $@
+# with no options we can call the normal rename function taking the args array as arguments
+rename_file "$@"
