@@ -74,9 +74,15 @@ rename_recursively(){
        IFS=$'\n'
        rename_arr=($(find "$(realpath $ARG)"))
        unset IFS
-
+       # join all elements to have single quotes
+        readarray -t rename_arr < <(printf "'%s'\n" "${rename_arr[@]}")
+       
+        #UPDATE HERE: 
+        #
+        # - fix output to single quotes
+        # perl-rename unable to take the array as argument still array as argument still 
        perl-rename -fniv "$rename_pattern" "${rename_arr[@]}"
-       echo "${rename_arr[@]}" 
+       #echo "${rename_arr[@]}" 
 
        printf "%s\n" "${rename_arr[@]}"
 
