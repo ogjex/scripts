@@ -70,48 +70,8 @@ rename_recursively(){
         exit_fail
     else
        set_rename_pattern
-       # first set a new line for each array object
-       IFS=$'\n'
-       rename_arr=($(find "$(realpath $ARG)"))
-       unset IFS
-       # join all elements to have single quotes
-        readarray -t rename_arr < <(printf "'%s'\n" "${rename_arr[@]}")
-       
-        #UPDATE HERE: 
-        #
-        # - fix output to single quotes
-        # perl-rename unable to take the array as argument still array as argument still 
-       perl-rename -fniv "$rename_pattern" "${rename_arr[@]}"
-       #echo "${rename_arr[@]}" 
-
-       printf "%s\n" "${rename_arr[@]}"
-
-       # echo all the elements that will be renamed
-       #for i in "${rename_arr[@]}"
-       #    do 
-       #        echo -e "$i"
-       #    done
-
+       find $ARG -exec perl-rename -fnv "$PATTERN" {} \;
     fi
-    #    the following is code for the recursive depth-first search. 
-    #    It needs to first find all files and folders and the paths to a rename array, so this array can be echoed and confirmed. Then perl-rename can be called on each path element in the array.
-#    ## now loop through the above array
-#    for i in "${ARG_ARR[@]}"
-#        do
-#            if [[ -e $i ]]; then
-#               echo "Added to rename array: $i"
-#               RENAME_ARR+=("$i")
-#            else 
-#               echo -e "$i is not a valid path.\nExiting." >&2
-#               exit 2
-#            fi
-#        done
-#    # echo all the elements that will be renamed
-#    for i in "${RENAME_ARR[@]}"
-#        do 
-#            echo -e "$i"
-#        done
-
 }
 
 # function to call so save 
