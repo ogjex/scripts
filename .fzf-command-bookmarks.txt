@@ -4,7 +4,7 @@ yay -Syu##update-packages-aur
 sudo reflector --verbose --country DK,SE,DE,FR,NO --protocol https -l 15 --sort rate --save /etc/pacman.d/mirrorlist##update-reflector-mirrors
 ls -t | head -n 2 | xargs -I {} mv {} ../Documents/jex-vault/__imgs/##move-recent-files-to-folder
 find . -type f -newermt "$(date +%Y-%m-%d)" -exec mv {} /path/to/source \;##move-files-date-today
-sudo dd bs=1M conv=fdatasync if="input/destination" of=/dev/"output/disk"##dd-image-write
+sudo dd bs=16M oflag=sync status=progress if="input/destination" of=/dev/"output/disk"##dd-image-write
 sudo pacman -Qe##show-packages-arch
 loffice --headless --convert-to pdf /file/name/and/path##libreoffice-convert-to-pdf-headless
 ln -s /source/file/ /link/location##symbolic-link
