@@ -11,9 +11,8 @@ usage() {
 }
 # check_files()
 set_rename_pattern(){
-    # THIS PATTERN NEEDS TO REFACTORED
     # NEXT UP IS TO LOOK UP THE SYNTAX FOR PERL REG EX
-    pattern=$'s/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    pattern=$'s/_+|\s+/-/g; s/-*--/-/g; s/-//; s/-\./\./; y/A-Z/a-z/; y/ÆØÅ/æøå/'
 }
 # dry_run()
 # rename_file()
