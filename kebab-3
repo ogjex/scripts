@@ -14,7 +14,7 @@ set_rename_pattern(){
     # Still an issue with finding the first -\w in any new result in recursive mode will remove the first - in the name
     # NEXT UP IS TO LOOK UP THE SYNTAX FOR PERL REG EX
     # s!([^/]*\Z)!uc($1)!e
-    pattern=$'s/_+|\s+/-/g; s/-*--/-/g; s/-//; s/-\./\./; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    pattern=$'s/_+|\s+/-/g; s/-*--/-/g; s/^-//; s/-\./\./; y/A-Z/a-z/; y/ÆØÅ/æøå/'
 }
 # dry_run()
 # rename_file()
@@ -73,7 +73,7 @@ rename_recursively(){
         exit_fail
     else
        set_rename_pattern
-       find $arg -exec -depth perl-rename -fnv "$pattern" {} \;
+       find $arg -depth -exec perl-rename -fnv "$pattern" {} \;
        read -p "Do you want to proceed with the rename? (y/n) " -n 1 -r
        echo    # (optional) move to a new line
 
@@ -82,7 +82,7 @@ rename_recursively(){
            # NEEDS TO BE FIXED ACCORDING TO: https://unix.stackexchange.com/questions/141086/how-can-i-use-rename-to-recursively-rename-everyting-to-uppercase
            # A simple way to avoid this difficulty is to make the renaming command act only on the base name part of the path. The regular expression ([^/]*\Z) matches the final part of the path that doesn't contain a / :
            # find . -depth -exec rename 's!([^/]*\Z)!uc($1)!e' {} +
-           find $arg -exec perl-rename -fv "$pattern" {} \;
+           find $arg -depth -exec perl-rename -fv "$pattern" {} \;
            echo
            echo "Files renamed to kebab-case."
        fi
