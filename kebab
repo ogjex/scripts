@@ -9,7 +9,10 @@ usage() {
         echo -e '   -r\n      Recursively search through current directory depth first'
         
 }
-# check_files()
+
+#get_absolute_path(){
+    # function that sets the path to absolute path to avoid issues with renaming dots (.) when used recursively
+#}
 set_rename_pattern(){
     # Still an issue with unable to find and substitute first character of the string (in this case either - or _) in recursive FIND mode ONLY. In targeted mode this works fine.
     # Still needs a way to rename dots (.) in the filename without removing the file extension: idea:
@@ -74,6 +77,8 @@ rename_recursively(){
         exit_fail
     else
        set_rename_pattern
+       # The following command is an alternative to find -execdir using xargs which also works
+       #find $arg -depth -print0 | xargs -0 perl-rename -fnv -- "$pattern"
        find $arg -depth -execdir perl-rename -fnv -- "$pattern" {} +
        read -p "Do you want to proceed with the rename? (y/n) " -n 1 -r
        echo    # (optional) move to a new line
