@@ -1,9 +1,0 @@
-#!/bin/bash
-rename_pattern='s/[- ]+/-/g; s/ +-/-/; s/ +_/-/; s/[_-]+/-/g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
-
-echo "This is a dry run. No files will be renamed."
-
-echo
-
-perl-rename -fniv "$rename_pattern" $@
-# read -p "Do you want to proceed with the rename? (y/n) " -n 1 -r
