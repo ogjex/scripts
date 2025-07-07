@@ -12,7 +12,7 @@ usage() {
 # check_files()
 set_rename_pattern(){
     # Still an issue with unable to find and substitute first character of the string (in this case either - or _). Using the caret ^ does not seem to work
-    pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/-\./\./; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/^-//;s/^-//; s/-\./\./; y/A-Z/a-z/; y/ÆØÅ/æøå/'
     # reg ex pattern explained:
     # s/_+|\s+/-/g = find one or more underscores _ OR (|) one or more whitespace (\s) and replace with a dash -
     # s/--+/-/g = replace any dash trailed by one or more dashes (-+) with a single dash
