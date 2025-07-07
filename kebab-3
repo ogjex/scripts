@@ -11,8 +11,10 @@ usage() {
 }
 # check_files()
 set_rename_pattern(){
-    # Still an issue with unable to find and substitute first character of the string (in this case either - or _). Using the caret ^ does not seem to work
-    pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/^-//;s/^-//; s/-\./\./; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    # Still an issue with unable to find and substitute first character of the string (in this case either - or _) in recursive FIND mode ONLY. In targeted mode this works fine.
+    # Still needs a way to rename dots (.) in the filename without removing the file extension: idea:
+    # s/\.(?![^.]+$)/_/g;
+    pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/^-//g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
     # reg ex pattern explained:
     # s/_+|\s+/-/g = find one or more underscores _ OR (|) one or more whitespace (\s) and replace with a dash -
     # s/--+/-/g = replace any dash trailed by one or more dashes (-+) with a single dash
@@ -41,18 +43,17 @@ rename_file(){
     # perform the rename on all elements in arg_arr
     set_rename_pattern
     
-    count_var=$(perl-rename -fnv "$pattern" "${arg_arr[@]}" | wc -l)
+    count_var=$(perl-rename -fnv -- "$pattern" "${arg_arr[@]}" | wc -l)
     echo "The following $count_var elements will be renamed: "
     # the following needs to also be added 
-    perl-rename -fnv "$pattern" "${arg_arr[@]}"
+    perl-rename -fnv -- "$pattern" "${arg_arr[@]}"
 
     read -p "Do you want to proceed with the rename? (y/n) " -n 1 -r
     echo -e "\n"
 
     if [[ $REPLY =~ ^[Yy]$ ]]
         then
-            perl-rename -i "$pattern" "${arg_arr[@]}"
-            # we need to find a way to count the number of times that the user has answered yes and use this as a variable
+            perl-rename -fv -- "$pattern" "${arg_arr[@]}"
 
         else
             echo "Aborting."
@@ -73,16 +74,13 @@ rename_recursively(){
         exit_fail
     else
        set_rename_pattern
-       find $arg -depth -execdir perl-rename -fnv "$pattern" {} +
+       find $arg -depth -execdir perl-rename -fnv -- "$pattern" {} +
        read -p "Do you want to proceed with the rename? (y/n) " -n 1 -r
        echo    # (optional) move to a new line
 
        if [[ $REPLY =~ ^[Yy]$ ]]
        then
-           # NEEDS TO BE FIXED ACCORDING TO: https://unix.stackexchange.com/questions/141086/how-can-i-use-rename-to-recursively-rename-everyting-to-uppercase
-           # A simple way to avoid this difficulty is to make the renaming command act only on the base name part of the path. The regular expression ([^/]*\Z) matches the final part of the path that doesn't contain a / :
-           # find . -depth -exec rename 's!([^/]*\Z)!uc($1)!e' {} +
-           find $arg -depth -execdir perl-rename -fv "$pattern" {} +
+           find $arg -depth -execdir perl-rename -fv -- "$pattern" {} +
            echo
            echo "Files renamed to kebab-case."
        fi
