@@ -24,24 +24,6 @@ set_rename_pattern(){
     # y/ÆØÅ/æøå/ = replace all lower case DK chars to upper case (needs to be part of separate pattern for some reason.
 }
 
-check_selected_files(){
-    # function that checks the selected files
-    # we first need to check all arguments to make sure that the selected files are valid
-    if [[ $# -eq 0 ]]; then
-        msg_illegal_parameters "$@"
-    else 
-        arg_arr=("$@")
-
-        ## now loop through the above array
-        for i in "${arg_arr[@]}"
-            do
-                if [[ ! -e $i ]]; then
-                   msg_invalid_path "$1"
-                fi
-            done
-    fi
-}
-
 rename_selected_files(){
     # we first need to check all arguments to make sure that the selected files are valid
     # sending the argument array $@ to the checker
@@ -65,11 +47,30 @@ rename_selected_files(){
     fi
     }
 
+check_selected_files(){
+    # function that checks the selected files
+    # we first need to check all arguments to make sure that the selected files are valid
+    if [[ $# -eq 0 ]]; then
+        msg_illegal_parameters "$@"
+    else 
+        arg_arr=("$@")
+
+        ## now loop through the above array
+        for i in "${arg_arr[@]}"
+            do
+                if [[ ! -e $i ]]; then
+                   msg_invalid_path "$i"
+                fi
+            done
+    fi
+}
+
 check_parameters(){
     if [[ $# -ne 1 ]]; then
         msg_illegal_parameters "$@"
     fi
 }
+
 check_recursive_path(){
     if [[ ! -d $1 ]]; then
         msg_invalid_path "$1"
