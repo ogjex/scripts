@@ -14,7 +14,7 @@ set_rename_pattern(){
     # Still an issue with unable to find and substitute first character of the string (in this case either - or _) in recursive FIND mode ONLY. In targeted mode this works fine.
     # Still needs a way to rename dots (.) in the filename without removing the file extension: idea:
     # s/\.(?![^.]+$)/_/g;
-    recursive_pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/^-//g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    recursive_pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/_+|\s+/-/g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
     selective_pattern=$'s/\.(?![^.]+$)/_/g; s/_+|\s+/-/g; s/--+/-/g; s/^-+|-+$//g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
     # reg ex pattern explained:
     # s/_+|\s+/-/g = find one or more underscores _ OR (|) one or more whitespace (\s) and replace with a dash -
@@ -32,15 +32,15 @@ rename_selected_files(){
     # perform the rename on all elements in arg_arr
     set_rename_pattern
     
-    count_var=$(perl-rename -fnv "$selective_pattern" -- "${arg_arr[@]}" | wc -l)
+    count_var=$(perl-rename -fnv -- "$selective_pattern" "${arg_arr[@]}" | wc -l)
     msg_show_renamed
     # run a dry run
-    perl-rename -fnv "$selective_pattern" -- "${arg_arr[@]}"
+    perl-rename -fnv -- "$selective_pattern" "${arg_arr[@]}"
     prompt_proceed    
 
     if [[ "$response" =~ ^(yes|y)$ ]]
         then
-           perl-rename -fv "$selective_pattern" -- "${arg_arr[@]}"
+           perl-rename -fv -- "$selective_pattern" "${arg_arr[@]}"
            msg_rename_complete
         else
             msg_aborting
@@ -58,7 +58,6 @@ check_selected_files(){
         ## now loop through the above array
         for i in "${arg_arr[@]}"
             do
-                echo "$i"
                 if [[ ! -e $i ]]; then
                    msg_invalid_path "$i"
                 fi
@@ -68,7 +67,6 @@ check_selected_files(){
 
 check_parameters(){
     if [[ $# -ne 1 ]]; then
-        echo "$@"
         msg_illegal_parameters "$@"
     fi
 }
@@ -91,13 +89,13 @@ rename_recursively(){
     # The following command is an alternative to find -execdir using xargs which also works
     #find $path -depth -print0 | xargs -0 perl-rename -fnv -- "$recursive_pattern"
     # dry run to check that all elements will be renamed correctly
-    count_var=$(find $path -depth -execdir perl-rename -fnv "$recursive_pattern" -- {} + | wc -l) 
+    count_var=$(find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} + | wc -l) 
     msg_show_renamed
-    find $path -depth -execdir perl-rename -fnv "$recursive_pattern" -- {} +
+    find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} +
     prompt_proceed
     if [[ "$response" =~ ^(yes|y)$ ]]
         then
-           find $path -depth -execdir perl-rename -fv "$recursive_pattern" -- {} +
+           find $path -depth -execdir perl-rename -fv -- "$recursive_pattern" {} +
            msg_rename_complete
         else
             msg_aborting
@@ -110,6 +108,7 @@ prompt_proceed(){
     response=${response,,}    # tolower
     echo    # (optional) move to a new line
 }
+
 msg_show_renamed(){
     echo "The following $count_var elements will be renamed: "
 }
@@ -141,7 +140,7 @@ msg_exit_fail() {
     exit 2
 }
 
-while getopts 'h:r' opt; do
+while getopts 'hr' opt; do
     # we need to remove the first argument in the args array (the option) to send the remaining array to the next functions
     shift $((OPTIND - 1))
 	case "$opt" in
