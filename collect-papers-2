@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+
+# first let us outline all of the different functions necessary for the program to run
+usage() {
+	echo -e 'Usage: collect-papers [OPTIONS] [DIRECTORY] [COLLECTION] [DATE]...\n\n'
+        echo -e 'Arguments:\n   [DIRECTORY]... The custom location path for creating the new collection)\n'
+        echo -e 'Arguments:\n   [COLLECTION]... The collection name to be created)\n'
+        echo -e 'Arguments:\n   [DATE]... Date for removing older collections)\n'
+        echo -e 'Options:'
+        echo -e '   -h\n      Get this help output'
+        echo -e '   -d\n      Select custom location by adding path this help output'
+        echo -e '   -o\n      Overwrite existing paper collection using fuzzy search'
+        echo -e '   -nd\n     Do not time stamp collection name'
+        echo -e '   -c\n      Clean up old collections prior to set date'
+}
+
+# we first read the config from $HOME/.config/collect-papers/collect-papers.toml
+read_config() {
+    #if no config is present, create default config file
+    # read the location of paper-collections, default ~/Documents/paper-collections
+    # read the preferred time stamp format, default 'YYYY-MM-DD-HH:MM'
+    # read location of papers (default ~/Documents/zotero/ [UNFINISHED]
+}
+
+zip_collection() {
+    # method for zipping the paper collection
+    # read the input file 
+}
+
+check_collection_location(){
+    # method that checks for valid directory location 
+    # first checks if the argument 1 is a valid directory and path
+}
+
+move_papers_to_collection(){
+
+}
+
+set_timestamp(){
+    # method that sets timestamp according to the desired format
+}
+
+create_collection(){
+    # method that creates new directory from argument 1
+    # if arguments > 1 check 
+}
+
+# then we define the getopts and identify the different options for the command
+while getopts 'h' opt; do
+    # we need to remove the first argument in the args array (the option) to send the remaining array to the next functions
+    shift $((OPTIND - 1))
+	case "$opt" in
+		h) usage; exit 0;;
+	 	*) usage >&2; exit 1;;
+	esac
+done  
+shift $((OPTIND - 1))
+
+# with no options we can call the normal rename function taking the args array as arguments
+create_collection "$@"
+
+
+
+
+
+
+
+
+
+## Define the temporary folder
+#TEMP_DIR="$HOME/temp-papers"
+#
+## Create the temp directory if it doesn't exist
+#mkdir -p "$TEMP_DIR"
+#
+## Check if an argument (file list) is provided
+#if [ -z "$1" ]; then
+#    echo "Usage: $0 <file-list>"
+#    exit 1
+#fi
+#
+## Ensure the provided file list exists
+#if [ ! -f "$1" ]; then
+#    echo "Error: File list '$1' not found!"
+#    exit 1
+#fi
+#
+## Find and prompt for deletion of files older than 1 hour
+#find "$TEMP_DIR" -type f -mmin +60 | while IFS= read -r file; do
+#    echo "File older than 1 hour: $file"
+#    read -p "Delete? (y/n): " choice
+#    case "$choice" in
+#        y|Y ) rm "$file"; echo "Deleted: $file";;
+#        * ) echo "Skipped: $file";;
+#    esac
+#done
+#
+## Decode the extracted filenames from percentage (URL) encoding to utf-8
+#while IFS= read -r line; do
+#    echo "$(python3 -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))" "$line")"
+#done < "$1" > decoded_filenames.txt && mv decoded_filenames.txt "$1"
+#
+## Read the file list line by line
+#while IFS= read -r line; do
+#    # Remove "file://" prefix
+#    filepath="${line#file://}"
+#
+#    # Check if file exists before copying
+#    if [ -f "$filepath" ]; then
+#        cp -i "$filepath" "$TEMP_DIR"
+#        echo "Copied: $filepath"
+#    else
+#        echo "File not found: $filepath"
+#    fi
+#done < "$1"
+#
+#echo "All files copied to $TEMP_DIR."
+#
+## Count files in temp-papers
+#FILE_COUNT=$(find "$TEMP_DIR" -type f | wc -l)
+#
+## If no files were copied, exit
+#if [ "$FILE_COUNT" -eq 0 ]; then
+#    echo "No files to zip. Exiting."
+#    exit 1
+#fi
+#
+## Remove any .zip files in the temp-papers directory
+#find "$TEMP_DIR" -type f -name "*.zip" -exec rm {} \;
+#echo "Removed old ZIP files from $TEMP_DIR."
+#
+## Prompt for ZIP filename
+#read -p "Enter a name for the ZIP file (without .zip): " zipname
+#ZIP_FILE="$TEMP_DIR/${zipname}.zip"
+#
+## Zip only the contents of temp-papers (not the folder itself)
+#(cd "$TEMP_DIR" && zip -r "$ZIP_FILE" . > /dev/null)
+#
+## Confirm completion
+#echo "Zipped $FILE_COUNT files into: $ZIP_FILE"
