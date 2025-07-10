@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# initialize our main variable first
+kebab_test_dir=$"kebab-test-dir"
+echo 
+# need to check if a kebab-test-dir already exists first
+# if [[ ]]
+    if [[ -d ./"${kebab_test_dir}" ]]; then
+    	rm -r -- ./"${kebab_test_dir}"
+    fi 
+mkdir "${kebab_test_dir}"
+
+## run the test script in the temp-test to create the needed files
+## then run cd .. && kebab-test && cd kebab-test-dir
+
+mkdir "${kebab_test_dir}"/test-dir_with_uncomplicated_slash__and___multiple_slashes
+mkdir "${kebab_test_dir}"/'test dir with spaces'
+mkdir "${kebab_test_dir}"/Test-dir_with-files-starting-with-dash
+mkdir "${kebab_test_dir}"/test-dir.with.dots.
+mkdir "${kebab_test_dir}"/-test-dir-starting-with-dash
+mkdir "${kebab_test_dir}"/_test-dir_with_slash__and___multiple_slashes
+mkdir "${kebab_test_dir}"/___test-dir_with_complicated_slash__and___multiple_slashes
+
+touch "${kebab_test_dir}"/test-dir_with_uncomplicated_slash__and___multiple_slashes/rename_me__also___.file
+touch "${kebab_test_dir}"/'test dir with spaces'/'file with many   spaces in it.file'
+touch "${kebab_test_dir}"/Test-dir_with-files-starting-with-dash/-rename_me_starting-with_single_dash.file
+touch "${kebab_test_dir}"/test-dir_with_uncomplicated_slash__and___multiple_slashes/--rename_me_with_double-dash---and-æøa__and-ÆØÅ.file
+touch "${kebab_test_dir}"/test-dir.with.dots./.rename.me.starting..with.dots.file
+touch "${kebab_test_dir}"/test-dir.with.dots./rename.me.with.dots.file
+
