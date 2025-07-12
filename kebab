@@ -28,18 +28,13 @@ rename_selected_files(){
     # sending the argument array $@ to the checker
     check_selected_files "$@"
     # we use arg_arr as an array that represents the files from the argument
-    # OBS: does not work with * which is annoying!
     arg_arr=("$@")
     # perform the rename on all elements in arg_arr
     set_rename_pattern
     count_var=$(perl-rename -fnv -- "$selective_pattern" "${arg_arr[@]}" | wc -l)
     msg_show_renamed
-    # run a dry run
-    for f in "${arg_arr[@]}"
-        do 
-            perl-rename -fnv -- "$selective_pattern" "$f"
-        done
-    #perl-rename -fnv -- "$selective_pattern" "$arg_arr"
+    # run a dry run 
+    perl-rename -fnv -- "$selective_pattern" "${arg_arr[@]}"
     prompt_proceed
 
     if [[ "$response" =~ ^(yes|y)$ ]]
