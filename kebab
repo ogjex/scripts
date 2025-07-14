@@ -2,11 +2,11 @@
 
 # first let us outline all of the different functions necessary for the program to run
 usage() {
-	echo -e 'Usage: kebab [OPTIONS] [FILES or DIRECTORY]...\n\n'
-        echo -e 'Arguments:\n   [FILES or DIRECTORY]... The files to rename or the directory to search through (eg. '*.filetype', '*', or '~/some-directory')\n'
-        echo -e 'Options:'
-        echo -e '   -h\n      Get this help output'
-        echo -e '   -r\n      Recursively search through current directory depth first'
+    echo -e 'Usage: kebab [OPTIONS] [FILES or DIRECTORY]...\n\n'
+    echo -e 'Arguments:\n   [FILES or DIRECTORY]... The files to rename or the directory to search through (eg. '*.filetype', '*', or '~/some-directory')\n'
+    echo -e 'Options:'
+    echo -e '   -h\n      Get this help output'
+    echo -e '   -r\n      Recursively search through current directory depth first'
 }
 
 set_rename_pattern(){
@@ -83,14 +83,18 @@ rename_recursively(){
     # check that the path is a valid directory
     check_recursive_path "$1"
     # set argument to absolute path to avoid dot replacement issues
-    path="$(realpath $1)"
+    path="$(realpath "$1")"
     set_rename_pattern
+    # ISSUE HERE WITH EXECUTING IN A FOLDER WITH SPACES IN THE NAME
+    echo "$path"
     # The following command is an alternative to find -execdir using xargs which also works
     #find $path -depth -print0 | xargs -0 perl-rename -fnv -- "$recursive_pattern"
     # dry run to check that all elements will be renamed correctly
     count_var=$(find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} + | wc -l) 
     msg_show_renamed
-    find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} +
+    find $path -depth -type d -execdir perl-rename -fnv -- "$selective_pattern" {} +
+    find $path -depth -type f -execdir perl-rename -fnv -- "$selective_pattern" {} +
+    #find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} +
     prompt_proceed
     if [[ "$response" =~ ^(yes|y)$ ]]
         then
