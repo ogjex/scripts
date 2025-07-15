@@ -13,8 +13,8 @@ set_rename_pattern(){
     # Still an issue with unable to find and substitute first character of the string (in this case either - or _) in recursive FIND mode ONLY. In targeted mode this works fine.
     # Still needs a way to rename dots (.) in the filename without removing the file extension: idea:
     # s/\.(?![^.]+$)/_/g;
-    recursive_pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/_+|\s+/-/g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
-    selective_pattern=$'s/\.(?![^.]+$)/_/g; s/_+|\s+/-/g; s/--+/-/g; s/^-+|-+$//g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    # recursive_pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/_+|\s+/-/g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    pattern=$'s/\.(?![^.]+$)/_/g; s/_+|\s+/-/g; s/--+/-/g; s/^-+|-+$//g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
     # reg ex pattern explained:
     # s/_+|\s+/-/g = find one or more underscores _ OR (|) one or more whitespace (\s) and replace with a dash -
     # s/--+/-/g = replace any dash trailed by one or more dashes (-+) with a single dash
@@ -31,15 +31,15 @@ rename_selected_files(){
     arg_arr=("$@")
     # perform the rename on all elements in arg_arr
     set_rename_pattern
-    count_var=$(perl-rename -fnv -- "$selective_pattern" "${arg_arr[@]}" | wc -l)
+    count_var=$(perl-rename -fnv -- "$pattern" "${arg_arr[@]}" | wc -l)
     msg_show_renamed
     # run a dry run 
-    perl-rename -fnv -- "$selective_pattern" "${arg_arr[@]}"
+    perl-rename -fnv -- "$pattern" "${arg_arr[@]}"
     prompt_proceed
 
     if [[ "$response" =~ ^(yes|y)$ ]]
         then
-           perl-rename -fv -- "$selective_pattern" "${arg_arr[@]}"
+           perl-rename -fv -- "$pattern" "${arg_arr[@]}"
            msg_rename_complete
         else
             msg_aborting
@@ -90,10 +90,10 @@ rename_recursively(){
     # The following command is an alternative to find -execdir using xargs which also works
     #find $path -depth -print0 | xargs -0 perl-rename -fnv -- "$recursive_pattern"
     # dry run to check that all elements will be renamed correctly
-    count_var=$(find "$path" -depth -execdir perl-rename -fnv -- "$selective_pattern" {} + | wc -l) 
+    count_var=$(find "$path" -depth -execdir perl-rename -fnv -- "$pattern" {} + | wc -l) 
     msg_show_renamed
-    find "$path" -depth -type d -execdir perl-rename -fnv -- "$selective_pattern" {} +
-    find "$path" -depth -type f -execdir perl-rename -fnv -- "$selective_pattern" {} +
+    find "$path" -depth -type d -execdir perl-rename -fnv -- "$pattern" {} +
+    find "$path" -depth -type f -execdir perl-rename -fnv -- "$pattern" {} +
     #find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} +
     prompt_proceed
     if [[ "$response" =~ ^(yes|y)$ ]]
