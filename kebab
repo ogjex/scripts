@@ -90,10 +90,10 @@ rename_recursively(){
     # The following command is an alternative to find -execdir using xargs which also works
     #find $path -depth -print0 | xargs -0 perl-rename -fnv -- "$recursive_pattern"
     # dry run to check that all elements will be renamed correctly
-    count_var=$(find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} + | wc -l) 
+    count_var=$(find "$path" -depth -execdir perl-rename -fnv -- "$selective_pattern" {} + | wc -l) 
     msg_show_renamed
-    find $path -depth -type d -execdir perl-rename -fnv -- "$selective_pattern" {} +
-    find $path -depth -type f -execdir perl-rename -fnv -- "$selective_pattern" {} +
+    find "$path" -depth -type d -execdir perl-rename -fnv -- "$selective_pattern" {} +
+    find "$path" -depth -type f -execdir perl-rename -fnv -- "$selective_pattern" {} +
     #find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} +
     prompt_proceed
     if [[ "$response" =~ ^(yes|y)$ ]]
