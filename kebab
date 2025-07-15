@@ -11,9 +11,7 @@ usage() {
 
 set_rename_pattern(){
     # Still an issue with unable to find and substitute first character of the string (in this case either - or _) in recursive FIND mode ONLY. In targeted mode this works fine.
-    # Still needs a way to rename dots (.) in the filename without removing the file extension: idea:
-    # s/\.(?![^.]+$)/_/g;
-    # recursive_pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/_+|\s+/-/g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
+    recursive_pattern=$'s/_+|\s+/-/g; s/--+/-/g; s/_+|\s+/-/g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
     pattern=$'s/\.(?![^.]+$)/_/g; s/_+|\s+/-/g; s/--+/-/g; s/^-+|-+$//g; s/-\.$/\./g; y/A-Z/a-z/; y/ÆØÅ/æøå/'
     # reg ex pattern explained:
     # s/_+|\s+/-/g = find one or more underscores _ OR (|) one or more whitespace (\s) and replace with a dash -
@@ -21,6 +19,10 @@ set_rename_pattern(){
     # s/-\./\./ = find the first encounter of -. and replace with a single dot (\.) to ensure that the file suffix is not overwritten.
     # y/A-Z/a-z/ = replace all lower case to upper case
     # y/ÆØÅ/æøå/ = replace all lower case DK chars to upper case (needs to be part of separate pattern for some reason.
+}
+
+rename_files(){
+    true;
 }
 
 rename_selected_files(){
@@ -86,19 +88,18 @@ rename_recursively(){
     path="$(realpath "$1")"
     set_rename_pattern
     # ISSUE HERE WITH EXECUTING IN A FOLDER WITH SPACES IN THE NAME
-    echo "$path"
-    # The following command is an alternative to find -execdir using xargs which also works
-    #find $path -depth -print0 | xargs -0 perl-rename -fnv -- "$recursive_pattern"
     # dry run to check that all elements will be renamed correctly
     count_var=$(find "$path" -depth -execdir perl-rename -fnv -- "$pattern" {} + | wc -l) 
     msg_show_renamed
-    find "$path" -depth -type d -execdir perl-rename -fnv -- "$pattern" {} +
-    find "$path" -depth -type f -execdir perl-rename -fnv -- "$pattern" {} +
-    #find $path -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} +
+    #fd --full-path "$path" -X perl-rename -fnv -- "$pattern" {}
+    find "$path" -depth -execdir perl-rename -fnv -- "$recursive_pattern" {} +
     prompt_proceed
     if [[ "$response" =~ ^(yes|y)$ ]]
         then
-           find $path -depth -execdir perl-rename -fv -- "$recursive_pattern" {} +
+           #fd --full-path "$path" --type d -x perl-rename -fv -- "$recursive_pattern" "{}"
+           #fd --full-path "$path" --type f -x perl-rename -fv -- "$recursive_pattern" "{}"
+           find "$path" -depth -type d -execdir perl-rename -fv -- "$recursive_pattern" "{}" \;
+           find "$path" -depth -type f -execdir perl-rename -fv -- "$recursive_pattern" "{}" \;
            msg_rename_complete
         else
             msg_aborting
