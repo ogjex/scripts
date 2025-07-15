@@ -75,7 +75,6 @@ check_parameters(){
 check_recursive_path(){
     if [[ ! -d $1 ]]; then
         msg_invalid_path "$1"
-        msg_exit_fail
     fi 
 }
 
