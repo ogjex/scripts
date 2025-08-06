@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
 # script to call flameshot with selective shot, adding to screenshot dir and copying to clipboard
-screenshot_dir="$HOME/Pictures/screenshots/"
-flameshot gui --clipboard --path "$screenshot_dir"
+scrot --select --format png --file ~/Pictures/screenshots/"$(date +%Y-%m-%d-T-%H%M-%S)".png | xclip -selection clipboard -target image/png -i
+# maim -s -u --bordersize=4 --nodrag --format=bmp | tee ~/Pictures/screenshots/"$(date +%y-%m-%d-T-%H-%M-%S)".bmp | xclip -selection clipboard -target image/bmp -i
+
+# flameshot is having issues with multimonitors since qt6
+# screenshot_dir="$HOME/Pictures/screenshots/"
+# flameshot gui --clipboard --path "$screenshot_dir" | xclip -selection clipboard -target image/png -i
 
 # find . -type f -printf "%T@ %p\n" | sort -n | cut -d' ' -f 2- | tail -n 1 | xclip -selection clipboard -t .png
 # find . -type f -printf "%T@ %p\n" | sort -n | cut -d' ' -f 2- | tail -n 1 | xclip -selection clipboard -t image/png
+# maim -s -u --bordersize=4 --nodrag | tee ~/Pictures/screenshots/$(date +%y-%m-%d-T-%H-%M-%S).png | xclip -selection clipboard -target image/png -i
