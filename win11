@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# script to launch win11 qemu 
+
+# first we run a separate process to run a unix socket to load the TPM
+# the following will need to do an absolute path since  
+swtpm socket --tpm2 --tpmstate dir=/home/jex/win11/tpm/ --ctrl type=unixio,path=/home/jex/win11/tpm/swtpm-sock
