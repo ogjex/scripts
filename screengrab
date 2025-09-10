@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # script to call flameshot with selective shot, adding to screenshot dir and copying to clipboard
-scrot --select --freeze --file "$HOME"/Pictures/screenshots/"$(date +%Y-%m-%d-T-%H:%M:%S)".png - | xclip -selection clipboard -target image/png -i && dunstify "Screenshot taken" "Saved and sent to clipboard."
+scrot --select --freeze --file "$HOME"/Pictures/screenshots/"$(date +%Y-%m-%d-T-%H-%M-%S)".png - | xclip -selection clipboard -target image/png -i && dunstify "Screenshot taken" "Saved and sent to clipboard."
 
 # maim -s -u --bordersize=4 --nodrag --format=bmp | tee ~/Pictures/screenshots/"$(date +%y-%m-%d-T-%H-%M-%S)".bmp | xclip -selection clipboard -target image/bmp -i
 
