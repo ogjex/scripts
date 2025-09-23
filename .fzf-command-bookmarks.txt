@@ -40,3 +40,5 @@ devour qemu-system-x86_64 -machine q35 -m 8192 -cpu host -enable-kvm -smp cores=
 devour qemu-system-x86_64 -machine q35 -m 8192 -cpu host -enable-kvm -smp cores=4 -vga virtio -net nic,model=virtio-net-pci,macaddr=52:54:00:12:34:56 -net user,id=mynet0,net=192.168.76.0/24,dhcpstart=192.168.76.9 -boot order=d -drive file=./win11-working-snapshot.cow,index=0,media=disk,if=virtio,format=qcow2 -chardev socket,id=chrtpm,path=./tpm/swtpm-sock -tpmdev emulator,id=tpm0,chardev=chrtpm -device tpm-tis,tpmdev=tpm0 -drive if=pflash,format=raw,readonly=on,file=./secboot/OVMF_CODE.secboot.4m.fd -drive if=pflash,format=raw,file=./secboot/OVMF_VARS_4M.secboot.fd##win11-qemu-launch-virtio
 ls -rt | tail -n 3##recent-files-ls
 python -m http.server 1102 -d /home/jex/Documents/presentations/imgs/##localhost-http-server-python-img
+find . -type f -exec stat -c '%Y %n' {} \; | sort -nr | head -3 | cut -d' ' -f2-##recent-files-find
+find . -type f -exec stat -c '%Y %n' {} \; | sort -nr | head -3 | cut -d' ' -f2- | xargs dragon-drop##drag-and-drop-recent-files-find
