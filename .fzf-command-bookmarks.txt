@@ -42,3 +42,4 @@ ls -rt | tail -n 3##recent-files-ls
 python -m http.server 1102 -d /home/jex/Documents/presentations/imgs/##localhost-http-server-python-img
 find . -type f -exec stat -c '%Y %n' {} \; | sort -nr | head -3 | cut -d' ' -f2-##recent-files-find
 find . -type f -exec stat -c '%Y %n' {} \; | sort -nr | head -3 | cut -d' ' -f2- | xargs dragon-drop##drag-and-drop-recent-files-find
+marp "file".md --pdf##marp-pdf
