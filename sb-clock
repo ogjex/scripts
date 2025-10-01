@@ -2,7 +2,7 @@
 
 cal_icon=""
 clock=$(date '+%I')
-date=$(date -I)
+date=$(echo "W"; date +%V; date +%m-%d)
 time=$(date +"%H:%M")
 #time=$(date "+%I:%M%p")
 
