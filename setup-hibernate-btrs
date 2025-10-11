@@ -1,0 +1,30 @@
+#/usr/bin/ env bash
+
+echo "creating swap subvolume"
+#sudo btrfs subvolume create /swap
+
+echo "creating swap file through btrfs"
+echo "Enter size of swap file (current RAM)"
+select input in "16GB" "32GB" "64GB" "128GB" "Cancel"; do
+    case $input in
+        16GB ) swap_size="16g"; break;;
+        32GB ) swap_size="32g"; break;;
+        64GB ) swap_size="64g"; break;;
+        128GB ) swap_size="128g"; break;;
+        Cancel ) exit;;
+    esac
+done
+echo "this will run mkswapfile with $swap_size"
+
+#sudo btrfs filesystem mkswapfile --size $swap_size --uuid clear /swap/swapfile
+
+# enabling swap using swapon 
+# sudo swapon /swap/swapfile
+# next tasks
+# add # /swap/swapfile /swap/swapfile none swap defaults 0 0 to /etc/fstab so it is mounted on boot
+# appending kernel parameters so resume and resume_offset can be loaded on boot
+# append resume=UUID= to /boot/loader/entries/arch.conf
+# find UUID from /dev/mapper/root and >> to /boot/loader/entries/arch.conf
+# append resume_offset=
+# use the btrfs inspect tool to add the swap resume-offset to the end of the boot loader
+# btrfs inspect-internal map-swapfile -r /swap/swapfile
