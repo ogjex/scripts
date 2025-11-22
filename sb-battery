@@ -32,10 +32,9 @@ for battery in /sys/class/power_supply/BAT?*; do
 		*) exit 1 ;;
 	esac
 	capacity="$(cat "$battery/capacity" 2>&1)"
-	remaining=""
+	remaining=$(upower -i "$(upower -e | grep BAT)" | gawk '/\<time/' | sed -e 's/inutes//g; s/ours//g' | gawk '{print $4 $5}')
 	# Will make a warn variable if discharging and low
 	[ "$status" = "󰂎 " ] && [ "$capacity" -le 25 ] && warn="❗"
 	# Prints the info
-	printf "%s%s%d%s%%" "$status" "$warn" "$capacity" "$remaining"; unset warn
+	printf "%s%s%d%% %s" "$status" "$warn" "$capacity" "$remaining"; unset warn
 done && printf "\\n"
-#upower -i $(upower -e | grep BAT) | gawk '/\<time/' | sed 's/inutes//g' | sed 's/ours//g' | gawk '{print $4 $5}'
