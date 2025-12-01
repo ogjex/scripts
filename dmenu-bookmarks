@@ -6,6 +6,6 @@ BMFILE="$HOME/.web-bookmarks"
 
 readarray -t bmarks < "$BMFILE"
 
-bmlist=$(printf '%s\n' "${bmarks[@]}" | awk 'print $2"
+bmlist=$(printf '%s\n' "${bmarks[@]}" | awk 'print $2')
 
-choice=$(printf '%s\n' "$bmlist" | dmenu -i -l 20 -p 'Open bookmark:')
+choice=$(printf '%s\n' "$bmlist" | dmenu -i -l 20 -p 'Open bookmark:' )
