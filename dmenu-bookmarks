@@ -1,0 +1,11 @@
+#!/bin/env bash
+
+# need opts input checker for which browser/application to use to open with (no option means defaultbrowser)
+
+BMFILE="$HOME/.web-bookmarks"
+
+readarray -t bmarks < "$BMFILE"
+
+bmlist=$(printf '%s\n' "${bmarks[@]}" | awk 'print $2"
+
+choice=$(printf '%s\n' "$bmlist" | dmenu -i -l 20 -p 'Open bookmark:')
