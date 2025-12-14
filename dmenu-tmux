@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/env bash
 set -eu
 
 TMUX_BIN="$(command -v tmux || { echo 'tmux not found'; exit 1; })"
 DMENU_BIN="$(command -v dmenu || { echo 'dmenu not found'; exit 1; })"
 
-DMENU_OPTS='-i -vi -c -bw 3 -W 600 -l 30 -h 40 -F -fn JetBrainsMono\ Nerd\ Font:size=16 -p Sessions:'
+DMENU_OPTS='-vi -fn JetBrainsMono\ Nerd\ Font:size=16 -p Sessions:'
 
 # List existing sessions (just names)
 sessions="$("$TMUX_BIN" list-sessions -F '#{session_name}' 2>/dev/null || true)"

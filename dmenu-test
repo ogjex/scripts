@@ -1,0 +1,4 @@
+#!/bin/env bash
+
+choice="$(find ~/.scripts/ -type f | sort -n | dmenu -W 600 -F -fn -l 10 -p "Select:")" 
+[ -n "${choice}" ] && echo "${choice}" &> /dev/null &

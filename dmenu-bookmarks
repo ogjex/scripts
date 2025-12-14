@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/env bash
 set -eu
 
 # Files
 # Put your files in .config/bookmarks/.
-PERS_FILE="${PERS_FILE:-$HOME/.config/bookmarks/personal.txt}"
-WORK_FILE="${WORK_FILE:-$HOME/.config/bookmarks/work.txt}"
+PERS_FILE="${PERS_FILE:-$HOME/Documents/sync-lib/bookmarks/web/personal.txt}"
+WORK_FILE="${WORK_FILE:-$HOME/Documents/sync-lib/bookmarks/web/work.txt}"
 
 # dmenu look
-DMENU="dmenu -i -vi -c -bw 3 -W 900 -l 30 -h 40 -F -fn 'JetBrainsMono Nerd Font:size=16' -p 'Bookmarks:'"
+DMENU="dmenu -vi -c -bw 3 -W 900 -l 30 -h 40 -F -fn 'JetBrainsMono Nerd Font:size=16' -p 'Bookmarks:'"
 
 # Browsers
 # Choose your browsers accordingly
