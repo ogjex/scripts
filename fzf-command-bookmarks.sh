@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
+# main repo: https://github.com/dzervas/fzf-command-bookmarks
 
-hash fzf 2> /dev/null || echo "[fzf-command-bookmarks] fzf binary not found!"
-hash highlight 2> /dev/null || echo "[fzf-command-bookmarks] highlight binary not found!"
+if [ -n "$BASH_VERSION" ]; then
+    CURRENT_SHELL="bash"
+elif [ -n "$ZSH_VERSION" ]; then
+    CURRENT_SHELL="zsh"
+else
+    CURRENT_SHELL="unknown"
+fi
 
-export FZF_COMMAND_BOOKMARKS_FILE="${HOME}/.fzf-command-bookmarks.txt"
+# following two hashes do not work on nixos
+# hash fzf 2> /dev/null || echo "[fzf-command-bookmarks] fzf binary not found!"
+# hash highlight 2> /dev/null || echo "[fzf-command-bookmarks] highlight binary not found!"
+
+export FZF_COMMAND_BOOKMARKS_FILE="${HOME}/scripts/.fzf-command-bookmarks.txt"
 export FZF_COMMAND_BOOKMARKS_ADD="\C-b"
 export FZF_COMMAND_BOOKMARKS_SHOW="\C-@"
 
