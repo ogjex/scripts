@@ -25,7 +25,8 @@ check_dependencies() {
             echo "  - $m"
         done
         exit 1
-}
+    fi
+    }
 
 function get_shell() {
     if [ -n "$BASH_VERSION" ]; then
