@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# main repo: https://github.com/dzervas/fzf-command-bookmarks
+
+# the following two hashes do not work on nixos
+# hash fzf 2> /dev/null || echo "[fzf-command-bookmarks] fzf binary not found!"
+# hash highlight 2> /dev/null || echo "[fzf-command-bookmarks] highlight binary not found!"
+
+check_dependencies() {
+    local dependencies=("fzf" "highlight")  # Accept all arguments as an array
+    local missing=()
+
+    for dep in "${dependencies[@]}"; do
+        if ! type -a "$dep" &> /dev/null; then
+            missing+=("$dep")
+        fi
+    done
+}
+

@@ -1,0 +1,6 @@
+#!/bin/env bash
+
+sudo dislocker -V /dev/sdb1 -u -- ~/mount/media/bitlocker/
+sudo mount ~/mount/media/bitlocker/dislocker-file ~/mount/media/bitlocker-loop/
+sudo ls ~/mount/media/bitlocker-loop/
+echo "usb bitlocker drive mounted at ~/mount/media/bitlocker-loop/"
