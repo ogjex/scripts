@@ -76,6 +76,12 @@ install_packages() {
     echo "Required packages installed."
 }
 
+# Function to clean install packages
+clean_packages() {
+    apt clean 
+    echo "Packages cleaned."
+}
+
 # Function to create a new user and add to sudoers
 create_user() {
     adduser --disabled-password --gecos "" "$USERNAME"
@@ -128,6 +134,7 @@ change_root_password() {
 # Execute all functions in order
 update_and_upgrade
 install_packages
+clean_packages
 set_dns
 set_static_ip
 apply_netplan
