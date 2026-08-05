@@ -126,12 +126,12 @@ change_root_password() {
 }
 
 # Execute all functions in order
+update_and_upgrade
+install_packages
 set_dns
 set_static_ip
 apply_netplan
 update_hostname
-update_and_upgrade
-install_packages
 create_user
 configure_ufw
 silence_console
