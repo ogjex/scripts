@@ -1,17 +1,18 @@
 #!/bin/env bash
 
 # Check if all required arguments are provided
-if [ "$#" -ne 6 ]; then
-    echo "Usage: $0 <primary_dns> <static_ip> <gateway> <username> <password> <root_password>"
+if [ "$#" -ne 7 ]; then
+    echo "Usage: $0 <primary_dns> <static_ip> <gateway> <hostname> <username> <password> <root_password>"
     exit 1
 fi
 
 PRIMARY_DNS="$1"
 STATIC_IP="$2"
 GATEWAY="$3"
-USERNAME="$4"
-PASSWORD="$5"
-ROOT_PASSWORD="$6"
+HOSTNAME="$4"
+USERNAME="$5"
+PASSWORD="$6"
+ROOT_PASSWORD="$7"
 
 # Function to set DNS in resolv.conf
 set_dns() {
@@ -56,6 +57,12 @@ apply_netplan() {
     echo "Netplan applied successfully."
 }
 
+# Function to update hostname
+update_hostname() {
+    hostnamectl sethostname "$HOSTNAME"
+    echo "$HOSTNAME" > /etc/hostname
+}
+
 # Function to update and upgrade packages
 update_and_upgrade() {
     apt update && apt upgrade -y
@@ -79,10 +86,10 @@ create_user() {
 # Function to configure UFW
 configure_ufw() {
     ufw default deny incoming
-    ufw default deny outgoing
+    ufw default allow outgoing
     ufw allow 22/tcp
     ufw --force enable
-    echo "UFW configured: All incoming/outgoing denied except SSH (port 22)."
+    echo "UFW configured: All incoming denied except SSH (port 22)."
 }
 # Function to remove console kernel logging now and on reboot
 silence_console() {
@@ -121,6 +128,7 @@ change_root_password() {
 set_dns
 set_static_ip
 apply_netplan
+update_hostname
 update_and_upgrade
 install_packages
 create_user
