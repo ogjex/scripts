@@ -102,7 +102,7 @@ silence_console() {
 configure_ssh() {
     mkdir -p /etc/ssh/sshd_config.d
     cat > /etc/ssh/sshd_config.d/99-hardening.conf <<EOF
-AuthenticationMethods publickey,password
+AuthenticationMethods password
 PubkeyAuthentication no
 PasswordAuthentication yes
 PermitRootLogin no
