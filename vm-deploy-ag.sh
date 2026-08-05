@@ -114,6 +114,9 @@ PubkeyAuthentication no
 PasswordAuthentication yes
 PermitRootLogin no
 EOF
+    # reconfigure keys so correct permissions are there along with host keys
+    dpkg-reconfigure openssh-server
+    # restart sshd to ensure new login
     systemctl restart sshd
     echo "SSH hardened: Only password authentication allowed. Change this when all keys have been added."
 }
