@@ -2,7 +2,7 @@
 
 # Check if all required arguments are provided
 if [ "$#" -ne 5 ]; then
-    echo "Usage: $0 <primary_dns> <static_ip> <gateway> <username> <password>"
+    echo "Usage: $0 <primary_dns> <static_ip> <gateway> <username> <password> <root_password>"
     exit 1
 fi
 
@@ -11,6 +11,7 @@ STATIC_IP="$2"
 GATEWAY="$3"
 USERNAME="$4"
 PASSWORD="$5"
+ROOT_PASSWORD="$6"
 
 # Function to set DNS in resolv.conf
 set_dns() {
@@ -101,6 +102,19 @@ EOF
     echo "SSH hardened: Only publickey and password authentication allowed."
 }
 
+# Function to change root password
+change_root_password() {
+    # Check if the user is root
+    if [ "$(id -u)" -ne 0 ]; then
+        echo "Error: You must be root to change the root password." >&2
+        return 1
+    fi
+
+    # Change the root password using chpasswd
+    echo "root:$ROOT_PASSWORD" | chpasswd
+    echo "Root password changed successfully."
+}
+
 # Execute all functions in order
 set_dns
 set_static_ip
@@ -111,5 +125,6 @@ create_user
 configure_ufw
 silence_console
 configure_ssh
+change_root_password
 
 echo "Script completed successfully. You can now SSH in as $USERNAME and use ssh-copy-id."
