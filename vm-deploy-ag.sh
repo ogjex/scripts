@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 # Check if all required arguments are provided
-if [ "$#" -ne 5 ]; then
+if [ "$#" -ne 6 ]; then
     echo "Usage: $0 <primary_dns> <static_ip> <gateway> <username> <password> <root_password>"
     exit 1
 fi
