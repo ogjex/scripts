@@ -59,7 +59,7 @@ apply_netplan() {
 
 # Function to update hostname
 update_hostname() {
-    hostnamectl sethostname "$HOSTNAME"
+    hostnamectl set-hostname "$HOSTNAME"
     echo "$HOSTNAME" > /etc/hostname
 }
 
