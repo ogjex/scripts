@@ -34,7 +34,9 @@ network:
   ethernets:
     eth0:
       addresses: [$STATIC_IP/24]
-      gateway4: $GATEWAY
+      routes:
+        - to: default
+          via: $GATEWAY
       nameservers:
         addresses: [$PRIMARY_DNS, 8.8.8.8, 8.8.4.4, 1.1.1.1]
 EOF
@@ -79,6 +81,12 @@ configure_ufw() {
     ufw --force enable
     echo "UFW configured: All incoming/outgoing denied except SSH (port 22)."
 }
+# Function to remove console kernel logging now and on reboot
+silence_console() {
+    dmesg -n 1
+    echo "kernel.printk = 1 4 1 7" >> /etc/sysctl.d/90-no-kernel-log-in-console.conf
+    echo "Console kernel logging silenced"
+}
 
 # Function to harden SSH configuration
 configure_ssh() {
@@ -101,6 +109,7 @@ update_and_upgrade
 install_packages
 create_user
 configure_ufw
+silence_console
 configure_ssh
 
 echo "Script completed successfully. You can now SSH in as $USERNAME and use ssh-copy-id."
