@@ -46,6 +46,8 @@ EOF
 
 # Function to apply Netplan configuration
 apply_netplan() {
+    # set correct netplan conf permissions (600)
+    chmod 600 /etc/netplan/*.yaml
     if ! netplan generate; then
         echo "Error: netplan generate failed. Exiting."
         exit 1
