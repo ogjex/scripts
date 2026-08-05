@@ -61,6 +61,7 @@ apply_netplan() {
 update_hostname() {
     hostnamectl set-hostname "$HOSTNAME"
     echo "$HOSTNAME" > /etc/hostname
+    systemctl restart networking
 }
 
 # Function to update and upgrade packages
@@ -79,7 +80,7 @@ install_packages() {
 create_user() {
     adduser --disabled-password --gecos "" "$USERNAME"
     echo "$USERNAME:$PASSWORD" | chpasswd
-    usermod -aG sudo "$USERNAME"
+    echo "$USERNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/"$USERNAME"
     echo "User $USERNAME created and added to sudoers."
 }
 
