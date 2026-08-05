@@ -96,12 +96,12 @@ configure_ssh() {
     mkdir -p /etc/ssh/sshd_config.d
     cat > /etc/ssh/sshd_config.d/99-hardening.conf <<EOF
 AuthenticationMethods publickey,password
-PubkeyAuthentication yes
+PubkeyAuthentication no
 PasswordAuthentication yes
 PermitRootLogin no
 EOF
     systemctl restart sshd
-    echo "SSH hardened: Only publickey and password authentication allowed."
+    echo "SSH hardened: Only password authentication allowed. Change this when all keys have been added."
 }
 
 # Function to change root password
