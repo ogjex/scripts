@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+
+# Default target directory
+DEFAULT_TARGET_DIR="$HOME/mount/media/bitlocker"
+
+# Usage function
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS] [DEVICE]
+
+Options:
+  -m              Mount BitLocker drive
+  -u              Unmount BitLocker drive
+  -d TARGET_DIR   Target directory (default: $DEFAULT_TARGET_DIR)
+  -h              Show this help message
+
+When mounting (-m), DEVICE argument is required (e.g., sdb1 or /dev/sdb1).
+
+The target directory will be created if it doesn't exist, with subdirectories:
+  TARGET_DIR/bitlocker/        - For dislocker
+  TARGET_DIR/bitlocker-loop/   - For mounting the dislocker-file
+
+Examples:
+  $(basename "$0") -m sdb1
+  $(basename "$0") -m -d ~/my_mount /dev/sdb1
+  $(basename "$0") -u
+  $(basename "$0") -u -d ~/my_mount
+EOF
+}
+
+# Initialize variables
+TARGET_DIR="$DEFAULT_TARGET_DIR"
+ACTION=""
+DEVICE=""
+
+# Parse options
+while getopts ":mud:h" opt; do
+    case $opt in
+        m) ACTION="mount" ;;
+        u) ACTION="unmount" ;;
+        d) TARGET_DIR="$OPTARG" ;;
+        h) usage && exit 0 ;;
+        \?) echo "Invalid option: -$OPTARG" >&2; usage; exit 1 ;;
+        :) echo "Option -$OPTARG requires an argument." >&2; usage; exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# Validate and set device
+if [ "$ACTION" = "mount" ]; then
+    if [ $# -eq 0 ]; then
+        echo "Error: Device argument is required for mounting." >&2
+        usage
+        exit 1
+    fi
+    DEVICE="$1"
+    [[ "$DEVICE" != /* ]] && DEVICE="/dev/$DEVICE"
+    [ ! -e "$DEVICE" ] && { echo "Error: Device $DEVICE does not exist." >&2; exit 1; }
+fi
+
+# Create directory structure
+create_dir_structure() {
+    local dir="$1"
+    mkdir -p "$dir/bitlocker" "$dir/bitlocker-loop" || {
+        echo "Error: Failed to create directory structure at $dir" >&2
+        exit 1
+    }
+}
+
+# Mount function
+do_mount() {
+    local device="$1" target="$2"
+    create_dir_structure "$target"
+
+    echo "Mounting BitLocker drive $device to $target"
+
+    sudo dislocker -V "$device" -u -- "$target/bitlocker/" || {
+        echo "Error: dislocker failed to mount $device" >&2
+        exit 1
+    }
+    [ ! -f "$target/bitlocker/dislocker-file" ] && {
+        echo "Error: dislocker-file was not created" >&2
+        exit 1
+    }
+
+    sudo mount "$target/bitlocker/dislocker-file" "$target/bitlocker-loop/" || {
+        echo "Error: Failed to mount dislocker-file" >&2
+        sudo umount "$target/bitlocker/" 2>/dev/null
+        exit 1
+    }
+
+    sudo chown -R "$USER:$USER" "$target" || {
+        echo "Warning: Failed to change ownership of $target" >&2
+    }
+
+    mount | grep -q "$target/bitlocker-loop" && {
+        echo "Successfully mounted BitLocker drive at $target/bitlocker-loop/"
+        echo "Contents:"
+        ls -la "$target/bitlocker-loop/"
+    } || {
+        echo "Error: Mount verification failed" >&2
+        sudo umount "$target/bitlocker-loop/" 2>/dev/null
+        sudo umount "$target/bitlocker/" 2>/dev/null
+        exit 1
+    }
+}
+
+# Unmount function
+do_unmount() {
+    local target="$1"
+    echo "Unmounting BitLocker drive from $target"
+
+    mount | grep -q "$target/bitlocker-loop" && {
+        sudo umount "$target/bitlocker-loop/" || {
+            echo "Error: Failed to unmount $target/bitlocker-loop/" >&2
+            exit 1
+        }
+        echo "Unmounted $target/bitlocker-loop/"
+    } || echo "$target/bitlocker-loop/ is not mounted"
+
+    mount | grep -q "$target/bitlocker" && {
+        sudo umount "$target/bitlocker/" || {
+            echo "Error: Failed to unmount $target/bitlocker/" >&2
+            exit 1
+        }
+        echo "Unmounted $target/bitlocker/"
+    } || echo "$target/bitlocker/ is not mounted"
+
+    echo "BitLocker drive unmounted successfully"
+    lsblk
+}
+
+# Main logic
+case "$ACTION" in
+    mount) do_mount "$DEVICE" "$TARGET_DIR" ;;
+    unmount) do_unmount "$TARGET_DIR" ;;
+    *) echo "Error: No action specified. Use -m to mount or -u to unmount." >&2; usage; exit 1 ;;
+esac

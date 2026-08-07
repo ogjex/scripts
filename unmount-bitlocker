@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# scripts to mount a bitlocker drive using dislocker
+# further refinement
+# - set variables
+# - add variables as arguments
+# - add umount option -u 
+sudo umount ~/mount/media/bitlocker-loop/
+sudo umount ~/mount/media/bitlocker/
+
+echo "usb bitlocker drive unmounted"
+lsblk

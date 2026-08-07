@@ -1,6 +1,11 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
-sudo dislocker -V /dev/sdb1 -u -- ~/mount/media/bitlocker/
+# scripts to mount a bitlocker drive using dislocker
+# further refinement
+# - set variables
+# - add variables as arguments
+# - add umount option -u 
+sudo dislocker -V /dev/$1 -u -- ~/mount/media/bitlocker/
 sudo mount ~/mount/media/bitlocker/dislocker-file ~/mount/media/bitlocker-loop/
 sudo ls ~/mount/media/bitlocker-loop/
 echo "usb bitlocker drive mounted at ~/mount/media/bitlocker-loop/"
