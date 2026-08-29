@@ -72,7 +72,7 @@ update_and_upgrade() {
 
 # Function to install required packages
 install_packages() {
-    apt install -y ssh vim git ufw net-tools nmap sudo locales kbd console-setup netplan.io
+    apt install -y ssh vim git ufw net-tools telnet curl dnsutils nmap sudo locales kbd console-setup netplan.io
     echo "Required packages installed."
 }
 
@@ -134,6 +134,21 @@ change_root_password() {
     echo "Root password changed successfully."
 }
 
+configure_ufw_kubernetes() {
+  ufw allow 6443/tcp
+  ufw allow 6444/tcp
+  ufw allow 2379/tcp
+  ufw allow 2380/tcp
+  ufw allow 10250/tcp
+  ufw allow 10257/tcp
+  ufw allow 10259/tcp
+  ufw allow 8472/udp
+  ufw allow 51820/udp
+  ufw allow 51821/udp
+  configure_ufw
+  echo "UFW configured: SSH and K8S ports are open."
+}
+
 # Execute all functions in order
 update_and_upgrade
 install_packages
@@ -149,3 +164,4 @@ configure_ssh
 change_root_password
 
 echo "Script completed successfully. You can now SSH in as $USERNAME and use ssh-copy-id."
+
