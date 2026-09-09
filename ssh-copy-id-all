@@ -1,0 +1,20 @@
+#!/bin/env bash
+
+# Usage: ./script.sh <server_list_file> <user> <password>
+# Example: ./script.sh servers.txt "user" "my_password"
+
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: $0 <server_list_file> <password>"
+    exit 1
+fi
+
+password="$3"
+user="$2"
+
+while IFS= read -r server; do
+    # Skip empty lines
+    if [ -n "$server" ]; then
+        echo "Copying SSH key to $server..."
+        sshpass -p "$password" ssh-copy-id -o StrictHostKeyChecking=no "$user""@""$server"
+    fi
+done < "$1"

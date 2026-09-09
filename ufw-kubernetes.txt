@@ -1,0 +1,11 @@
+sudo ufw allow 6443/tcp
+sudo ufw allow 6444/tcp
+sudo ufw allow 2379/tcp
+sudo ufw allow 2380/tcp
+sudo ufw allow 10250/tcp
+sudo ufw allow 10257/tcp
+sudo ufw allow 10259/tcp
+sudo ufw allow 8472/udp
+sudo ufw allow 51820/udp
+sudo ufw allow 51821/udp
+
