@@ -44,4 +44,7 @@ find . -type f -exec stat -c '%Y %n' {} \; | sort -nr | head -3 | cut -d' ' -f2-
 find . -type f -exec stat -c '%Y %n' {} \; | sort -nr | head -3 | cut -d' ' -f2- | xargs dragon-drop##drag-and-drop-recent-files-find
 marp "file".md --pdf##marp-pdf
 tar -xJvf ".xz file"##untar-xz
-##
+mount truenas.lab.mrph.dk:/mnt/storage-pve-nas/media/video/ ~/mnt/mnt-nas/media/##mount-video-nas
+mount truenas.lab.mrph.dk:/mnt/storage-pve-nas/media/pictures/ ~/mnt/mnt-nas/pictures/##mount-pictures-nas
+mount truenas.lab.mrph.dk:/mnt/storage-pve-nas/cold-backup/video/ ~/mnt/mnt-nas/cold-backup//##mount-cold-backup-nas
+mount truenas.lab.mrph.dk:/mnt/storage-pve-nas/sync/mrph/ ~/mnt/mnt-nas/media/##mount-sync-nas
