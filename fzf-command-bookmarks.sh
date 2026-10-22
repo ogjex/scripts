@@ -24,7 +24,7 @@ check_dependencies() {
         for m in "${missing[@]}"; do
             echo "  - $m"
         done
-        exit 1
+        return 1
     fi
     }
 
