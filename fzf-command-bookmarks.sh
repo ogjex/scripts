@@ -74,12 +74,12 @@ function _fzf_command_bookmark_add() {
 	if [ -z "$CMD" ]; then
 	    case "$current_shell" in
 		"bash")
-		    autoload -Uz read-from-minibuffer
+		    echo -en "\nCommand to add: "
+		    read -er CMD;;		    
+    "zsh")
+        autoload -Uz read-from-minibuffer
 		    read-from-minibuffer "Command to add: " $LBUFFER $RBUFFER
 		    CMD="$REPLY";;
-		"zsh")
-		    echo -en "\nCommand to add: "
-		    read -er CMD;;
 	    esac
 	fi
 
