@@ -1,0 +1,53 @@
+# forgejo-deploy-key.conf
+#
+# Copy to forgejo-deploy-key.conf and edit. Simple KEY=VALUE lines; blank lines
+# and lines starting with # are ignored. Values may be quoted. Anything here can
+# be overridden on the command line - see ./forgejo-deploy-key.sh --help.
+#
+# The API token does NOT belong here; it goes in .env (or the environment).
+
+# Base URL of the Forgejo instance, no path, no trailing slash.
+FORGEJO_URL=https://git.example.com
+
+# Repository that gets the deploy key.
+FORGEJO_REPO=myorg/flux-k8s
+
+# Namespace the secret is created in. Must already exist.
+NAMESPACE=flux-system
+
+# Name of the secret. Defaults to <repo-name>-deploy-key.
+SECRET_NAME=flux-system
+
+# SSH endpoint of the Forgejo instance. SSH_HOST defaults to the host in
+# FORGEJO_URL; set it when SSH and HTTPS live on different names. SSH_PORT ends
+# up both in the ssh-keyscan call and in the GitRepository URL Flux needs.
+#SSH_HOST=git.example.com
+SSH_PORT=2222
+
+# Where the known_hosts entries come from.
+#
+# Leave KNOWN_HOSTS_FILE unset to have the script fetch them with ssh-keyscan
+# against SSH_HOST:SSH_PORT on each run; it prints the fingerprints before
+# creating anything so you can compare them with what Forgejo publishes.
+#
+# Set it to pin the host keys to a file you control and reviewed once - the
+# safer option, since a scan trusts whatever answers on the port. Produce it
+# with:
+#   ssh-keyscan -p 2222 git.example.com > known_hosts
+# or let the script do it once and keep the result:
+#   ./forgejo-deploy-key.sh --scan --save-known-hosts ./known_hosts ...
+#KNOWN_HOSTS_FILE=./known_hosts
+
+# Title shown in Forgejo's deploy key list. Must be unique per repository.
+# Defaults to k8s:<namespace>/<secret-name>.
+#KEY_TITLE=k8s:flux-system/flux-system
+
+# ed25519 (default) or rsa (4096 bit).
+KEY_TYPE=ed25519
+
+# true  - pull only, what Flux needs to sync
+# false - the key can push, e.g. for image-automation writing tags back
+READ_ONLY=true
+
+# kubectl context. Leave unset to use the current one.
+#KUBE_CONTEXT=my-cluster

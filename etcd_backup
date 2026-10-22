@@ -1,0 +1,2 @@
+0 */6 * * * root /usr/local/sbin/backup-etcd.sh 
+-c hullehavn -t /root/.talos/config -b /srv/etcd-snapshots/ -l /srv/etcd-snapshots/snapshot-logs.txt
